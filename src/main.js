@@ -1,4 +1,4 @@
-const { MainGame } = require("./MainGame");
+import { MainGame } from './MainGame.js'
 
 const mainGame = new MainGame();
 
