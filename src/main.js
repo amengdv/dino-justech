@@ -1,11 +1,26 @@
-import { MainGame } from './MainGame.js'
+let lastTime;
 
-const mainGame = new MainGame();
-
-function gameLoop(currentTime) {
-    mainGame.start(currentTime);
-    requestAnimationFrame(gameLoop);
+function main() {
+    lastTime = 0;
+    window.requestAnimationFrame(start);
 }
 
-// Start the game loop
-requestAnimationFrame(gameLoop);
+function start(currentTime) {
+    window.requestAnimationFrame(start);
+
+    const deltaInSecond = (currentTime - lastTime) / 1000;
+
+    update(deltaInSecond);
+    render();
+
+    lastTime = currentTime;
+}
+
+function update(deltaTime) {
+    console.log("Second per frame:", deltaTime);
+}
+
+function render() {
+}
+
+main();
