@@ -1,10 +1,14 @@
+// Image Variable
 const images = [];
 const dino1 = new Image();
 const dino2 = new Image();
-const frameDuration = 100;
 
+// Animation Variable
+const frameDuration = 100;
 let currentFrame = 0;
 let lastFrameTime = 0;
+
+// Position Variable
 let posX;
 let posY;
 let width;

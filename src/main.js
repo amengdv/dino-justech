@@ -1,4 +1,5 @@
 import { drawDino, initDino, updateDino } from "./dino.js";
+import { drawGround, initGround, updateGround } from "./ground.js";
 
 /**
  * @type {CanvasRenderingContext2D} ctx
@@ -10,6 +11,7 @@ let lastTime;
 
 function main() {
     lastTime = 0;
+    initGround();
     initDino();
     window.requestAnimationFrame(start);
 }
@@ -28,10 +30,12 @@ function start(currentTime) {
 
 function update(deltaTime) {
     updateDino(deltaTime);
+    updateGround(deltaTime);
 }
 
 function render(currentTime) {
     ctx.clearRect(0, 0, 800, 600);
+    drawGround(ctx);
     drawDino(ctx, currentTime);
 }
 
