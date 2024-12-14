@@ -1,5 +1,5 @@
 import { checkCollision } from "./collision.js";
-import { animationFrameId, gameState } from "./main.js";
+import { gameState } from "./main.js";
 
 // Image Variable
 const imagesRun = [];
@@ -15,17 +15,17 @@ const images = {
     duck: imagesDuck
 };
 
-// Animation Variable
-const frameDuration = 100;
-let currentFrame = 0;
-let lastFrameTime = 0;
-let action = 'run';
-
 // Position Variable
 let posX = 400;
 let posY = 297;
 let width = 0;
 let height = 0;
+
+// Animation Variable
+const frameDuration = 100;
+let currentFrame = 0;
+let lastFrameTime = 0;
+let action = 'run';
 
 let velocityY = 0;
 let isGrounded = false;
@@ -57,6 +57,7 @@ function initDino() {
         dino1.onload = () => {
             imagesRun[0] = dino1;
             imagesRun[1] = dino2;
+
             imagesDuck[0] = dinoDuck1;
             imagesDuck[1] = dinoDuck2;
 
