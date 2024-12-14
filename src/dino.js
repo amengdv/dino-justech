@@ -14,6 +14,18 @@ let posY;
 let width;
 let height;
 
+let velocityY = 0;
+let isGrounded = false;
+const GROUND_LEVEL = 297;
+const JUMP_STRENGTH = -400;
+const GRAVITY = 600;
+
+let isJumping = false;
+
+// Key Variable
+let upPressed = false;
+let downPressed = false;
+
 function initDino() {
     dino1.src = '../resources/dinorun1.png';
     dino2.src = '../resources/dinorun2.png';
@@ -28,7 +40,32 @@ function initDino() {
     }
 }
 
+function jump() {
+    if (isGrounded) {
+        velocityY = JUMP_STRENGTH;
+        isGrounded = false;
+        isJumping = true;
+    }
+}
+
 function updateDino(deltaTime) {
+    // Input
+    document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
+
+    if (upPressed) {
+        jump();
+    }
+
+    velocityY += GRAVITY * deltaTime;
+
+    posY += velocityY * deltaTime;
+    if (posY >= GROUND_LEVEL) {
+        posY = GROUND_LEVEL;
+        velocityY = 0;
+        isGrounded = true;
+        isJumping = false;
+    }
 }
 
 /**
@@ -42,6 +79,22 @@ function drawDino(ctx, currentTime) {
     }
 
     ctx.drawImage(images[currentFrame], posX, posY, width, height);
+}
+
+function keyDownHandler(event) {
+    if (event.code === "ArrowDown") {
+        downPressed = true;
+    } else if (event.code === "ArrowUp") {
+        upPressed = true;
+    }
+}
+
+function keyUpHandler(event) {
+    if (event.code === "ArrowDown") {
+        downPressed = false;
+    } else if (event.code === "ArrowUp") {
+        upPressed = false;
+    }
 }
 
 export {
