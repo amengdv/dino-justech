@@ -1,35 +1,85 @@
-// Image Variabl
-const images = [];
-const bird1 = new Image();
-const bird2 = new Image();
+import { getRandomBetween, getRandomInt } from "./util.js";
 
 // Animation Variable
 const frameDuration = 100;
 let currentFrame = 0;
 let lastFrameTime = 0;
 
-// Position Variable
-let posX;
-let posY;
-let width;
-let height;
+let accumulator = 0;
 
-function initBird() {
+/**
+ * @typedef {Object} Bird
+ * @property {HTMLImageElement[]} birdImages[]
+ * @property {number} posX
+ * @property {number} posY
+ * @property {number} width
+ * @property {number} height
+ */
+
+/**
+ * @type {Bird[]}
+ */
+const birds = [];
+
+let width = 0;
+let height = 0;
+
+/**
+ * @param {number} newX 
+ * @param {number} newY 
+ */
+function initBird(newX, newY) {
+    const bird1 = new Image();
+    const bird2 = new Image();
     bird1.src = '../resources/bird1.png';
     bird2.src = '../resources/bird2.png';
     bird1.onload = () => {
-        images[0] = bird1;
-        images[1] = bird2;
+        const images = [
+            bird1,
+            bird2
+        ];
+        width = bird1.width * 0.5;
+        height = bird1.height * 0.5;
 
-        const scaleFact = 0.5;
-        width = images[0].width * scaleFact;
-        height = images[0].height * scaleFact;
-        posX = 400 - width;
-        posY = 100;
+        const bird = {
+            birdImages: images,
+            posX: newX,
+            posY: newY,
+            width: width,
+            height: height
+        }
+
+        birds.push(bird);
     }
 }
 
-function updateBird() {
+function updateBird(deltaTime) {
+
+    accumulator += deltaTime;
+
+    // in seconds
+    const spawnTimeRange = {
+        min: 5,
+        max: 10
+    }
+
+    const randTimeFromRange = getRandomBetween(spawnTimeRange.min, spawnTimeRange.max);
+
+    const randomYPos = getRandomInt(200, 260);
+
+    if (accumulator >= randTimeFromRange) {
+        initBird(800 + width, randomYPos);
+        accumulator = 0;
+    }
+
+    for (let bird of birds) {
+        bird.posX -= 300 * deltaTime;
+        if (bird.posX < 0) {
+            const idx = birds.indexOf(bird);
+            birds.splice(idx, 1);
+        }
+    }
+
 }
 
 /**
@@ -37,11 +87,13 @@ function updateBird() {
  */
 function drawBird(ctx, currentTime) {
     if (currentTime - lastFrameTime > frameDuration) {
-        currentFrame = (currentFrame + 1) % images.length;
+        currentFrame = (currentFrame + 1) % 2;
         lastFrameTime = currentTime;
     }
 
-    ctx.drawImage(images[currentFrame], posX, posY, width, height);
+    for (const bird of birds) {
+        ctx.drawImage(bird.birdImages[currentFrame], bird.posX, bird.posY, bird.width, bird.height);
+    }
 }
 
 export {

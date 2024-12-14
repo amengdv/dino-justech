@@ -1,5 +1,5 @@
-import { drawBird, initBird } from "./bird.js";
-import { drawCactus, initCactus } from "./cactus.js";
+import { initBird, drawBird, updateBird } from "./bird.js";
+import { initCactus } from "./cactus.js";
 import { drawDino, initDino, updateDino } from "./dino.js";
 import { drawGround, initGround, updateGround } from "./ground.js";
 import { drawScore, initScore } from "./score.js";
@@ -17,7 +17,6 @@ function main() {
     initGround();
     initDino();
     initScore(700, 20, '20px serif');
-    initBird();
     initCactus();
     window.requestAnimationFrame(start);
 }
@@ -37,6 +36,7 @@ function start(currentTime) {
 function update(deltaTime) {
     updateDino(deltaTime);
     updateGround(deltaTime);
+    updateBird(deltaTime);
 }
 
 function render(currentTime) {
@@ -45,7 +45,7 @@ function render(currentTime) {
     //drawCactus(ctx);
     drawGround(ctx);
     drawDino(ctx, currentTime);
-    // drawBird(ctx, currentTime);
+    drawBird(ctx, currentTime);
 }
 
 main();

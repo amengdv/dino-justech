@@ -10,7 +10,7 @@ const dinoDuck2 = new Image();
 const images = {
     run: imagesRun,
     duck: imagesDuck
-}
+};
 
 // Animation Variable
 const frameDuration = 100;
@@ -19,10 +19,10 @@ let lastFrameTime = 0;
 let action = 'run';
 
 // Position Variable
-let posX;
-let posY;
-let width;
-let height;
+let posX = 400;
+let posY = 297;
+let width = 0;
+let height = 0;
 
 let velocityY = 0;
 let isGrounded = false;
@@ -36,23 +36,43 @@ let isJumping = false;
 let upPressed = false;
 let downPressed = false;
 
-function initDino() {
-    dino1.src = '../resources/dinorun1.png';
-    dino2.src = '../resources/dinorun2.png';
-    dinoDuck1.src = '../resources/dinoduck1.png'
-    dinoDuck2.src = '../resources/dinoduck2.png'
-    dino1.onload = () => {
-        imagesRun[0] = dino1;
-        imagesRun[1] = dino2;
-        imagesDuck[0] = dinoDuck1;
-        imagesDuck[1] = dinoDuck2;
-        const scaleFact = 0.5;
-        width = imagesRun[0].width * scaleFact;
-        height = imagesRun[0].height * scaleFact;
-        posX = 400 - width;
-        posY = 297;
-    }
+// Flag to track if images are loaded
+let imagesLoaded = false;
 
+/**
+ * Initialize dino and load images
+ * @returns {Promise<void>}
+ */
+function initDino() {
+    return new Promise((resolve) => {
+        dino1.src = '../resources/dinorun1.png';
+        dino2.src = '../resources/dinorun2.png';
+        dinoDuck1.src = '../resources/dinoduck1.png';
+        dinoDuck2.src = '../resources/dinoduck2.png';
+
+        // Wait for the first image to load
+        dino1.onload = () => {
+            imagesRun[0] = dino1;
+            imagesRun[1] = dino2;
+            imagesDuck[0] = dinoDuck1;
+            imagesDuck[1] = dinoDuck2;
+
+            const scaleFact = 0.5;
+            width = imagesRun[0].width * scaleFact;
+            height = imagesRun[0].height * scaleFact;
+            posX = 400 - width;
+            posY = 297;
+
+            imagesLoaded = true;
+            resolve();
+        };
+
+        // Handle potential image loading errors
+        dino1.onerror = () => {
+            console.error('Failed to load dino run image');
+            resolve();
+        };
+    });
 }
 
 function jump() {
@@ -89,16 +109,27 @@ function updateDino(deltaTime) {
 }
 
 /**
- * @param {CanvasRenderingContext2D} ctx
+ * Draw dino on canvas
+ * @param {CanvasRenderingContext2D} ctx 
+ * @param {number} currentTime 
  */
 function drawDino(ctx, currentTime) {
+    // Check if images are loaded and not undefined
+    if (!imagesLoaded || !images[action] || images[action].length === 0) {
+        return;
+    }
 
+    // Update animation frame
     if (currentTime - lastFrameTime > frameDuration) {
-        currentFrame = (currentFrame + 1) % imagesRun.length;
+        currentFrame = (currentFrame + 1) % images[action].length;
         lastFrameTime = currentTime;
     }
 
-    ctx.drawImage(images[action][currentFrame], posX, posY, width, height);
+    // Safely draw image
+    const currentImage = images[action][currentFrame];
+    if (currentImage) {
+        ctx.drawImage(currentImage, posX, posY, width, height);
+    }
 }
 
 function keyDownHandler(event) {
