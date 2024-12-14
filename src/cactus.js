@@ -1,54 +1,98 @@
-import { getRandomInt } from "./util.js";
+import { addObstacle } from "./collision.js";
+import { getRandomBetween, getRandomInt } from "./util.js";
 
 // Image Variables with height offsets
-const images = [];
 const cactusData = [
-    { src: '../resources/cactuslargedouble.png' },
-    { src: '../resources/cactuslargesingle.png' },
-    { src: '../resources/cactuslargetriple.png' },
-    { src: '../resources/cactussmalldouble.png' },
-    { src: '../resources/cactussmallsingle.png' },
-    { src: '../resources/cactussmalltriple.png' },
+    { src: '../resources/cactuslargedouble.png', width: 0, height: 0 },
+    { src: '../resources/cactuslargesingle.png', width: 0, height: 0 },
+    { src: '../resources/cactuslargetriple.png', width: 0, height: 0 },
+    { src: '../resources/cactussmalldouble.png', width: 0, height: 0 },
+    { src: '../resources/cactussmallsingle.png', width: 0, height: 0 },
+    { src: '../resources/cactussmalltriple.png', width: 0, height: 0 },
 ];
 
-function initCactus() {
-    const usedPositions = []; // Keep track of used x positions
+let accumulator = 0;
 
-    cactusData.forEach(({ src }) => {
-        const image = new Image();
-        image.src = src;
-        image.onload = () => {
-            // Calculate width and height with scaling (50% in this case)
-            const width = image.width * 0.5;
-            const height = image.height * 0.5;
 
-            // Generate a unique xRand position
-            let xRand;
-            do {
-                xRand = getRandomInt(0, 800);
-            } while (usedPositions.some(pos => Math.abs(pos - xRand) < width)); // Avoid overlap
+/**
+ *  @typedef {Object} Cactus
+ * @property {HTMLImageElement} cactusImage
+ * @property {number} posX
+ * @property {number} posY
+ * @property {number} width
+ * @property {number} height
+ */
 
-            usedPositions.push(xRand); // Store the xRand to prevent overlap
+/**
+ * @type {Cactus[]}
+ */
+const cacti = [];
 
-            // Calculate y position based on height
-            const yRand = (260 - height) + 105;
+/**
+ * @param {number} newX
+ * @param {number} newY 
+ * @param {number} variation 
+ */
+function initCactus(newX, variation) {
+    /**
+     * @type {Cactus}
+     */
+    let cactus = null;
 
-            // Store the image and calculated dimensions/positions
-            images.push({ image, xRand, yRand, width, height });
-        };
-    });
+    const image = new Image();
+    image.src = cactusData[variation].src;
+    image.onload = () => {
+        const width = image.width * 0.5;
+        const height = image.height * 0.5;
+        cactusData[variation].width = width;
+        cactusData[variation].height = height;
+
+        cactus = {
+            cactusImage: image,
+            posX: newX,
+            posY: (260 - height) + 105,
+            width: width,
+            height: height
+        }
+
+        cacti.push(cactus);
+        addObstacle(cactus);
+    }
 }
 
-function updateCactus() {
-    // Future functionality can go here
+function updateCactus(deltaTime) {
+    accumulator += deltaTime;
+
+    // in seconds
+    const spawnTimeRange = {
+        min: 5,
+        max: 10
+    }
+
+    const randTimeFromRange = getRandomBetween(spawnTimeRange.min, spawnTimeRange.max);
+
+    const randomVariation = getRandomInt(0, 6);
+
+    if (accumulator >= randTimeFromRange) {
+        initCactus(850, randomVariation);
+        accumulator = 0;
+    }
+
+    for (let cactus of cacti) {
+        cactus.posX -= 200 * deltaTime;
+        if (cactus.posX < 0) {
+            const idx = cacti.indexOf(cactus);
+            cacti.splice(idx, 1);
+        }
+    }
 }
 
 /**
  * @param {CanvasRenderingContext2D} ctx
  */
 function drawCactus(ctx) {
-    for (const { image, xRand, yRand, width, height } of images) {
-        ctx.drawImage(image, xRand, yRand, width, height);
+    for (const cactus of cacti) {
+        ctx.drawImage(cactus.cactusImage, cactus.posX, cactus.posY, cactus.width, cactus.height);
     }
 }
 

@@ -1,3 +1,6 @@
+import { checkCollision } from "./collision.js";
+import { animationFrameId, gameState } from "./main.js";
+
 // Image Variable
 const imagesRun = [];
 const dino1 = new Image();
@@ -105,6 +108,11 @@ function updateDino(deltaTime) {
         velocityY = 0;
         isGrounded = true;
         isJumping = false;
+    }
+
+    const touch = checkCollision(posX, posY, width, height);
+    if (touch) {
+        gameState = 'gameOver';
     }
 }
 

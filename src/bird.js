@@ -1,3 +1,4 @@
+import { addObstacle } from "./collision.js";
 import { getRandomBetween, getRandomInt } from "./util.js";
 
 // Animation Variable
@@ -50,6 +51,7 @@ function initBird(newX, newY) {
         }
 
         birds.push(bird);
+        addObstacle(bird);
     }
 }
 
@@ -59,8 +61,8 @@ function updateBird(deltaTime) {
 
     // in seconds
     const spawnTimeRange = {
-        min: 5,
-        max: 10
+        min: 10,
+        max: 20
     }
 
     const randTimeFromRange = getRandomBetween(spawnTimeRange.min, spawnTimeRange.max);
