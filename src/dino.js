@@ -1,12 +1,22 @@
 // Image Variable
-const images = [];
+const imagesRun = [];
 const dino1 = new Image();
 const dino2 = new Image();
+
+const imagesDuck = [];
+const dinoDuck1 = new Image();
+const dinoDuck2 = new Image();
+
+const images = {
+    run: imagesRun,
+    duck: imagesDuck
+}
 
 // Animation Variable
 const frameDuration = 100;
 let currentFrame = 0;
 let lastFrameTime = 0;
+let action = 'run';
 
 // Position Variable
 let posX;
@@ -29,15 +39,20 @@ let downPressed = false;
 function initDino() {
     dino1.src = '../resources/dinorun1.png';
     dino2.src = '../resources/dinorun2.png';
+    dinoDuck1.src = '../resources/dinoduck1.png'
+    dinoDuck2.src = '../resources/dinoduck2.png'
     dino1.onload = () => {
-        images[0] = dino1;
-        images[1] = dino2;
+        imagesRun[0] = dino1;
+        imagesRun[1] = dino2;
+        imagesDuck[0] = dinoDuck1;
+        imagesDuck[1] = dinoDuck2;
         const scaleFact = 0.5;
-        width = images[0].width * scaleFact;
-        height = images[0].height * scaleFact;
+        width = imagesRun[0].width * scaleFact;
+        height = imagesRun[0].height * scaleFact;
         posX = 400 - width;
         posY = 297;
     }
+
 }
 
 function jump() {
@@ -55,6 +70,11 @@ function updateDino(deltaTime) {
 
     if (upPressed) {
         jump();
+    }
+    if (downPressed) {
+        action = 'duck';
+    } else {
+        action = 'run';
     }
 
     velocityY += GRAVITY * deltaTime;
@@ -74,11 +94,11 @@ function updateDino(deltaTime) {
 function drawDino(ctx, currentTime) {
 
     if (currentTime - lastFrameTime > frameDuration) {
-        currentFrame = (currentFrame + 1) % images.length;
+        currentFrame = (currentFrame + 1) % imagesRun.length;
         lastFrameTime = currentTime;
     }
 
-    ctx.drawImage(images[currentFrame], posX, posY, width, height);
+    ctx.drawImage(images[action][currentFrame], posX, posY, width, height);
 }
 
 function keyDownHandler(event) {
