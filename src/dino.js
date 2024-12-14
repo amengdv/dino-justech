@@ -24,7 +24,7 @@ function initDino() {
         width = images[0].width * scaleFact;
         height = images[0].height * scaleFact;
         posX = 400 - width;
-        posY = 300;
+        posY = 297;
     }
 }
 
