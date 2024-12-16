@@ -67,7 +67,7 @@ function updateBird(deltaTime) {
 
     const randTimeFromRange = getRandomBetween(spawnTimeRange.min, spawnTimeRange.max);
 
-    const randomYPos = getRandomInt(200, 260);
+    const randomYPos = getRandomInt(200, 230);
 
     if (accumulator >= randTimeFromRange) {
         initBird(800 + width, randomYPos);
