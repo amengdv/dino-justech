@@ -1,4 +1,9 @@
 html,
 body {
     background-color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Set height to max so html and body stretches to the max */
+    height: 100%;
 }
