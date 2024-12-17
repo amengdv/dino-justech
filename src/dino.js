@@ -19,7 +19,7 @@ function initDino(xNew, yNew, scale) {
     x = xNew;
     y = yNew;
 
-    dinoAnimation = createAnimation(dinoRun, x, y, width, height, 300);
+    dinoAnimation = createAnimation(dinoRun.length, 300);
 }
 
 function drawDino(currentTime) {
