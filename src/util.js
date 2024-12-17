@@ -44,3 +44,31 @@ const ctx = canvas.getContext('2d');
 export function drawImage(image, x, y, width, height) {
     ctx.drawImage(image, x, y, width, height);
 }
+
+export function clearCanvas(x, y, w, h) {
+    ctx.clearRect(x, y, w, h);
+}
+
+/**
+ * Creates an animation function that cycles through images as frames.
+ *
+ * @param {HTMLImageElement[]} images - Array of images to be used as animation frames.
+ * @param {number} x - The x-coordinate where the animation will be displayed.
+ * @param {number} y - The y-coordinate where the animation will be displayed.
+ * @param {number} width - The width of the animation frame.
+ * @param {number} height - The height of the animation frame.
+ * @param {number} frameDuration - The duration (in milliseconds) for each frame to display.
+ * @returns {(currentTime: number) => number} - A function that takes the current time (timestamp)
+ *   and returns the index of the current frame to display.
+ */
+export function createAnimation(images, x, y, width, height, frameDuration) {
+    let lastTime = 0;
+    let currentFrame = 0;
+    return (currentTime) => {
+        if (currentTime - lastTime >= frameDuration) {
+            currentFrame = (currentFrame + 1) % images.length;
+            lastTime = currentTime;
+        }
+        return currentFrame;
+    }
+}

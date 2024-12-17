@@ -1,9 +1,11 @@
-import { drawImage, loadImages } from "./util.js";
+import { createAnimation, drawImage, loadImages } from "./util.js";
 
 const dinoRun = await loadImages([
     'dino/run/dinorun1.png',
     'dino/run/dinorun2.png'
 ]);
+
+let dinoAnimation;
 
 let x = 0;
 let y = 0;
@@ -16,10 +18,13 @@ function initDino(xNew, yNew, scale) {
     height = dinoRun[0].height * scale;
     x = xNew;
     y = yNew;
+
+    dinoAnimation = createAnimation(dinoRun, x, y, width, height, 300);
 }
 
 function drawDino(currentTime) {
-    drawImage(dinoRun[0], x, y, width, height);
+    const currFrame = dinoAnimation(currentTime);
+    drawImage(dinoRun[currFrame], x, y, width, height);
 }
 
 export {
