@@ -1,3 +1,5 @@
+import { drawDino, initDino } from "./dino.js";
+
 let lastTime = 0;
 
 export function start(currentTime) {
@@ -7,15 +9,18 @@ export function start(currentTime) {
     const deltaTime = (currentTime - lastTime) / 1000;
 
     update(deltaTime);
-    render();
+    render(currentTime);
 
     lastTime = currentTime;
 }
 
-function update(deltaTime) {
-    console.log('Updating, delta time:', deltaTime);
+export function initGameState() {
+    initDino(10, 10, 0.5);
 }
 
-function render() {
-    console.log('Rendering...');
+function update(deltaTime) {
+}
+
+function render(currentTime) {
+    drawDino(currentTime);
 }
