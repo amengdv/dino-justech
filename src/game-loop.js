@@ -1,4 +1,5 @@
 import { drawDino, initDino } from "./dino.js";
+import { drawGround, initGround } from "./ground.js";
 import { clearCanvas } from "./util.js";
 
 let lastTime = 0;
@@ -16,7 +17,8 @@ export function start(currentTime) {
 }
 
 export function initGameState() {
-    initDino(20, 20, 0.5);
+    initGround(0, 300, 0.5);
+    initDino(20, 336, 0.5);
 }
 
 function update(deltaTime) {
@@ -25,4 +27,5 @@ function update(deltaTime) {
 function render(currentTime) {
     clearCanvas(0, 0, 800, 600);
     drawDino(currentTime);
+    drawGround();
 }
