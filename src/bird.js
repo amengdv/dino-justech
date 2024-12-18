@@ -56,6 +56,10 @@ function updateBird(deltaTime) {
 
     for (const bird of birds) {
         bird.x -= 200 * deltaTime;
+        if (bird.x <= 0) {
+            const idx = birds.indexOf(bird);
+            birds.splice(idx, 1);
+        }
     }
 }
 
