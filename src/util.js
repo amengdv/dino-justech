@@ -83,8 +83,4 @@ export function renderGameOver() {
     ctx.font = '40px serif';
     ctx.textAlign = 'center';
     ctx.fillText('Game Over', 400, 300);
-
-    // Optional: Add restart instructions
-    ctx.font = '20px serif';
-    ctx.fillText('Press SPACE to Restart', 400, 350);
 }
