@@ -1,4 +1,4 @@
-import { drawDino, initDino } from "./dino.js";
+import { drawDino, initDino, updateDino } from "./dino.js";
 import { drawGround, initGround } from "./ground.js";
 import { clearCanvas } from "./util.js";
 
@@ -10,8 +10,8 @@ export function start(currentTime) {
     // 60 Frame Per Second = 1 / 60
     const deltaTime = (currentTime - lastTime) / 1000;
 
-    update(deltaTime);
-    render(currentTime);
+    update(2 * deltaTime);
+    render(2 * currentTime);
 
     lastTime = currentTime;
 }
@@ -22,6 +22,7 @@ export function initGameState() {
 }
 
 function update(deltaTime) {
+    updateDino(deltaTime);
 }
 
 function render(currentTime) {

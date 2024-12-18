@@ -1,3 +1,4 @@
+import { downPressed, input, upPressed } from "./input.js";
 import { createAnimation, drawImage, loadImages } from "./util.js";
 
 const dinoRun = await loadImages([
@@ -5,10 +6,24 @@ const dinoRun = await loadImages([
     'dino/run/dinorun2.png'
 ]);
 
+const dinoDuck = await loadImages([
+    'dino/duck/dinoduck1.png',
+    'dino/duck/dinoduck2.png',
+])
+
+const actions = {
+    run: dinoRun,
+    duck: dinoDuck
+}
+
+let action = 'run';
 let dinoAnimation;
 
 let x = 0;
 let y = 0;
+let yVel = 0;
+let gravity = 350;
+let state = 'running';
 let width = 0;
 let height = 0;
 
@@ -22,12 +37,38 @@ function initDino(xNew, yNew, scale) {
     dinoAnimation = createAnimation(dinoRun.length, 300);
 }
 
+function jump() {
+    state = 'jumping';
+    yVel = -250;
+}
+
+function updateDino(deltaTime) {
+    input();
+    if (upPressed && state !== 'jumping') {
+        jump();
+    } else if (downPressed) {
+        action = 'duck';
+    } else {
+        action = 'run';
+    }
+
+    if (y >= 336) {
+        state = 'running';
+    }
+
+    y += yVel * deltaTime;
+    y = Math.min(y, 336);
+    yVel += gravity * deltaTime;
+
+}
+
 function drawDino(currentTime) {
     const currFrame = dinoAnimation(currentTime);
-    drawImage(dinoRun[currFrame], x, y, width, height);
+    drawImage(actions[action][currFrame], x, y, width, height);
 }
 
 export {
     initDino,
+    updateDino,
     drawDino
 }
