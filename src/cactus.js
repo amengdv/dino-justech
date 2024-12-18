@@ -1,4 +1,4 @@
-import { drawImage, loadImages } from "./util.js";
+import { drawImage, loadImages, getRandomBetweenCont, getRandomBetweenDisc } from "./util.js";
 
 const cactusImages = await loadImages([
     'cactus/cactuslargedouble.png',
@@ -24,20 +24,46 @@ const cactusImages = await loadImages([
  */
 const cacti = [];
 
-function spawnCactus(x, scale, variant) {
+let accumulator = 0;
+
+function spawnCactus(scale, variant) {
     /**
      * @type {Cactus}
      */
     const cactus = {
         variant: variant,
-        x: x,
         width: cactusImages[variant].width * scale,
         height: cactusImages[variant].height * scale
     }
 
+    cactus.x = 800 + cactus.width;
     cactus.y = 300 - cactus.height + 105;
 
     cacti.push(cactus);
+}
+
+function updateCactus(deltaTime) {
+    accumulator += deltaTime;
+    const rangeSpawnTime = {
+        min: 12,
+        max: 28,
+    }
+    const randomRange = getRandomBetweenCont(rangeSpawnTime.min, rangeSpawnTime.max);
+
+    if (accumulator >= randomRange) {
+        const randomVariant = getRandomBetweenDisc(0, cactusImages.length - 1);
+        console.log(randomVariant);
+        spawnCactus(0.5, randomVariant);
+        accumulator = 0;
+    }
+
+    for (const cactus of cacti) {
+        cactus.x -= 200 * deltaTime;
+        if (cactus.x <= 0 + cactus.width) {
+            const idx = cacti.indexOf(cactus);
+            cacti.splice(idx, 1);
+        }
+    }
 }
 
 function drawCactus() {
@@ -48,5 +74,6 @@ function drawCactus() {
 
 export {
     spawnCactus,
-    drawCactus
+    drawCactus,
+    updateCactus
 }
