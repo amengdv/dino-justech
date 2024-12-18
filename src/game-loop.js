@@ -1,4 +1,5 @@
 import { drawBird, initBird, spawnBird, updateBird } from "./bird.js";
+import { drawCactus, spawnCactus } from "./cactus.js";
 import { drawDino, initDino, updateDino } from "./dino.js";
 import { drawGround, initGround, updateGround } from "./ground.js";
 import { clearCanvas } from "./util.js";
@@ -21,6 +22,7 @@ export function initGameState() {
     initGround(0, 300, 0.5, 200);
     initDino(20, 336, 0.5);
     initBird(300);
+    spawnCactus(200, 0.5, 1);
 }
 
 function update(deltaTime) {
@@ -31,7 +33,8 @@ function update(deltaTime) {
 
 function render(currentTime) {
     clearCanvas(0, 0, 800, 600);
+    drawCactus();
+    drawGround();
     drawDino(currentTime);
     drawBird(currentTime);
-    drawGround();
 }
