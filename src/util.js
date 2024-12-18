@@ -76,3 +76,15 @@ export function getRandomBetweenCont(min, max) {
 export function getRandomBetweenDisc(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+export function renderGameOver() {
+    ctx.clearRect(0, 0, 800, 600);
+    ctx.fillStyle = 'rgb(200 0 0)';
+    ctx.font = '40px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Game Over', 400, 300);
+
+    // Optional: Add restart instructions
+    ctx.font = '20px serif';
+    ctx.fillText('Press SPACE to Restart', 400, 350);
+}
