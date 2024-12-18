@@ -39,7 +39,7 @@ function initDino(xNew, yNew, scale) {
 
 function jump() {
     state = 'jumping';
-    yVel = -250;
+    yVel = -280;
 }
 
 function updateDino(deltaTime) {
