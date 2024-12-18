@@ -54,7 +54,6 @@ function updateCactus(deltaTime) {
 
     if (accumulator >= randomRange) {
         const randomVariant = getRandomBetweenDisc(0, cactusImages.length - 1);
-        console.log(randomVariant);
         spawnCactus(0.5, randomVariant);
         accumulator = 0;
     }
