@@ -1,3 +1,4 @@
+import { addObstacle } from "./obstacle.js";
 import { drawImage, loadImages, getRandomBetweenCont, getRandomBetweenDisc } from "./util.js";
 
 const cactusImages = await loadImages([
@@ -40,6 +41,7 @@ function spawnCactus(scale, variant) {
     cactus.y = 300 - cactus.height + 105;
 
     cacti.push(cactus);
+    addObstacle(cactus);
 }
 
 function updateCactus(deltaTime) {
@@ -59,7 +61,7 @@ function updateCactus(deltaTime) {
 
     for (const cactus of cacti) {
         cactus.x -= 200 * deltaTime;
-        if (cactus.x <= 0 + cactus.width) {
+        if (cactus.x + cactus.width <= 0) {
             const idx = cacti.indexOf(cactus);
             cacti.splice(idx, 1);
         }

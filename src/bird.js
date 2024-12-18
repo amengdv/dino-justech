@@ -1,3 +1,4 @@
+import { addObstacle } from "./obstacle.js";
 import { createAnimation, drawImage, getRandomBetweenCont, getRandomBetweenDisc, loadImages } from "./util.js";
 
 const birdImages = await loadImages([
@@ -38,6 +39,7 @@ function spawnBird(y, scale) {
     bird.x = bird.width + 800;
 
     birds.push(bird);
+    addObstacle(bird);
 }
 
 function updateBird(deltaTime) {
@@ -56,7 +58,7 @@ function updateBird(deltaTime) {
 
     for (const bird of birds) {
         bird.x -= 200 * deltaTime;
-        if (bird.x <= 0) {
+        if (bird.x + bird.width <= 0) {
             const idx = birds.indexOf(bird);
             birds.splice(idx, 1);
         }

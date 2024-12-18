@@ -1,7 +1,8 @@
-import { drawBird, initBird, spawnBird, updateBird } from "./bird.js";
-import { drawCactus, spawnCactus, updateCactus } from "./cactus.js";
+import { drawBird, initBird, updateBird } from "./bird.js";
+import { drawCactus, updateCactus } from "./cactus.js";
 import { drawDino, initDino, updateDino } from "./dino.js";
 import { drawGround, initGround, updateGround } from "./ground.js";
+import { removeObstacle } from "./obstacle.js";
 import { clearCanvas } from "./util.js";
 
 let lastTime = 0;
@@ -29,6 +30,7 @@ function update(deltaTime) {
     updateGround(deltaTime);
     updateBird(deltaTime);
     updateCactus(deltaTime);
+    removeObstacle();
 }
 
 function render(currentTime) {

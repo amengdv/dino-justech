@@ -1,4 +1,5 @@
 import { downPressed, input, upPressed } from "./input.js";
+import { isCollide } from "./obstacle.js";
 import { createAnimation, drawImage, loadImages } from "./util.js";
 
 const dinoRun = await loadImages([
@@ -60,6 +61,10 @@ function updateDino(deltaTime) {
     y = Math.min(y, 336);
     yVel += gravity * deltaTime;
 
+    const collided = isCollide(x, y, width, height);
+    if (collided) {
+
+    }
 }
 
 function drawDino(currentTime) {
