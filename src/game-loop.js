@@ -6,9 +6,15 @@ import { removeObstacle } from "./obstacle.js";
 import { clearCanvas } from "./util.js";
 
 let lastTime = 0;
+let gameState = 'running';
+
+export function gameOver() {
+    gameState = 'gameOver';
+    console.log(gameState);
+}
 
 export function start(currentTime) {
-    window.requestAnimationFrame(start);
+    const id = window.requestAnimationFrame(start);
 
     // 60 Frame Per Second = 1 / 60
     const deltaTime = (currentTime - lastTime) / 1000;
@@ -17,6 +23,10 @@ export function start(currentTime) {
     render(2 * currentTime);
 
     lastTime = currentTime;
+
+    if (gameState === 'gameOver') {
+        window.cancelAnimationFrame(id);
+    }
 }
 
 export function initGameState() {

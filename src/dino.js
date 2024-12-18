@@ -1,3 +1,4 @@
+import { gameOver } from "./game-loop.js";
 import { downPressed, input, upPressed } from "./input.js";
 import { isCollide } from "./obstacle.js";
 import { createAnimation, drawImage, loadImages } from "./util.js";
@@ -19,6 +20,8 @@ const actions = {
 
 let action = 'run';
 let dinoAnimation;
+
+let collisionOffset = 5;
 
 let x = 0;
 let y = 0;
@@ -61,9 +64,9 @@ function updateDino(deltaTime) {
     y = Math.min(y, 336);
     yVel += gravity * deltaTime;
 
-    const collided = isCollide(x, y, width, height);
+    const collided = isCollide(x - collisionOffset, y - collisionOffset, width - collisionOffset, height - collisionOffset);
     if (collided) {
-
+        gameOver();
     }
 }
 
