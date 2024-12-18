@@ -1,3 +1,4 @@
+import { drawBird, initBird, spawnBird, updateBird } from "./bird.js";
 import { drawDino, initDino, updateDino } from "./dino.js";
 import { drawGround, initGround, updateGround } from "./ground.js";
 import { clearCanvas } from "./util.js";
@@ -19,15 +20,18 @@ export function start(currentTime) {
 export function initGameState() {
     initGround(0, 300, 0.5, 200);
     initDino(20, 336, 0.5);
+    initBird(300);
 }
 
 function update(deltaTime) {
     updateDino(deltaTime);
     updateGround(deltaTime);
+    updateBird(deltaTime);
 }
 
 function render(currentTime) {
     clearCanvas(0, 0, 800, 600);
     drawDino(currentTime);
+    drawBird(currentTime);
     drawGround();
 }
