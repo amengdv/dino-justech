@@ -27,6 +27,12 @@ const cacti = [];
 
 let accumulator = 0;
 
+const rangeSpawnTime = {
+    min: 12,
+    max: 38,
+}
+let randomRange = getRandomBetweenCont(rangeSpawnTime.min, rangeSpawnTime.max);
+
 function spawnCactus(scale, variant) {
     /**
      * @type {Cactus}
@@ -46,13 +52,9 @@ function spawnCactus(scale, variant) {
 
 function updateCactus(deltaTime) {
     accumulator += deltaTime;
-    const rangeSpawnTime = {
-        min: 12,
-        max: 28,
-    }
-    const randomRange = getRandomBetweenCont(rangeSpawnTime.min, rangeSpawnTime.max);
 
     if (accumulator >= randomRange) {
+        randomRange = getRandomBetweenCont(rangeSpawnTime.min, rangeSpawnTime.max);
         const randomVariant = getRandomBetweenDisc(0, cactusImages.length - 1);
         spawnCactus(0.5, randomVariant);
         accumulator = 0;

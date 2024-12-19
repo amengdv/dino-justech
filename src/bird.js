@@ -22,8 +22,22 @@ const birds = [];
 let birdAnim;
 let accumulator = 0;
 
-function initBird(frameDuration) {
+let minHeight;
+let maxHeight;
+let scale;
+
+const rangeSpawnTime = {
+    min: 10,
+    max: 30
+}
+let randomRange;
+
+function initBird(frameDuration, minHeightNew, maxHeightNew, scaleNew) {
+    randomRange = getRandomBetweenCont(rangeSpawnTime.min, rangeSpawnTime.max);
     birdAnim = createAnimation(birdImages.length, frameDuration);
+    minHeight = minHeightNew;
+    maxHeight = maxHeightNew;
+    scale = scaleNew;
 }
 
 function spawnBird(y, scale) {
@@ -44,20 +58,17 @@ function spawnBird(y, scale) {
 
 function updateBird(deltaTime) {
     accumulator += deltaTime;
-    const rangeSpawnTime = {
-        min: 10,
-        max: 20
-    }
-    const randomRange = getRandomBetweenCont(rangeSpawnTime.min, rangeSpawnTime.max);
 
     if (accumulator >= randomRange) {
-        const randomY = getRandomBetweenDisc(220, 265);
-        spawnBird(randomY, 0.5);
+        console.log(randomRange);
+        randomRange = getRandomBetweenCont(rangeSpawnTime.min, rangeSpawnTime.max);
+        const randomY = getRandomBetweenDisc(minHeight, maxHeight);
+        spawnBird(randomY, scale);
         accumulator = 0;
     }
 
     for (const bird of birds) {
-        bird.x -= 200 * deltaTime;
+        bird.x -= 250 * deltaTime;
         if (bird.x + bird.width <= 0) {
             const idx = birds.indexOf(bird);
             birds.splice(idx, 1);
