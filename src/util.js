@@ -77,10 +77,23 @@ export function getRandomBetweenDisc(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-export function renderGameOver() {
+/**
+ * @param {string} message
+ * @param { { x: number, y: number } } pos
+ * @param {number} size
+ * @param {string} font 
+ */
+export function drawText(message, size, pos, font) {
+    ctx.font = `${size}px ${font}`
+    ctx.fillText(message, pos.x, pos.y);
+}
+
+export function renderGameOver(score) {
     ctx.clearRect(0, 0, 800, 600);
     ctx.fillStyle = 'rgb(200 0 0)';
     ctx.font = '40px serif';
     ctx.textAlign = 'center';
     ctx.fillText('Game Over', 400, 300);
+    ctx.font = '30px serif';
+    ctx.fillText(`Your Score: ${score}`, 400, 360);
 }
