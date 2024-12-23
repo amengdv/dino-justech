@@ -11,51 +11,51 @@ let id;
 let gameState = 'running';
 
 export function start(currentTime) {
-    if (gameState === 'running') {
+	if (gameState === 'running') {
 
-        id = window.requestAnimationFrame(start);
+		id = window.requestAnimationFrame(start);
 
-        // 60 Frame Per Second = 1 / 60
-        const deltaTime = (currentTime - lastTime) / 1000;
+		// 60 Frame Per Second = 1 / 60
+		const deltaTime = (currentTime - lastTime) / 1000;
 
-        update(2 * deltaTime);
-        render(2 * currentTime);
+		update(2 * deltaTime);
+		render(2 * currentTime);
 
-        lastTime = currentTime;
-    } else if (gameState === 'gameOver') {
-        renderGameOver(getScore());
-        window.cancelAnimationFrame(id);
-        return;
-    }
+		lastTime = currentTime;
+	} else if (gameState === 'gameOver') {
+		renderGameOver(getScore());
+		window.cancelAnimationFrame(id);
+		return;
+	}
 }
 
 export function initGameState() {
-    gameState = 'running';
-    lastTime = 0;
-    initScore();
-    initGround(0, 300, 0.5, 200);
-    initDino(20, 336, 0.5);
-    initBird(300, 230, 265, 0.4);
+	gameState = 'running';
+	lastTime = 0;
+	initScore();
+	initGround(0, 300, 0.5, 200);
+	initDino(20, 336, 0.5);
+	initBird(300, 230, 265, 0.4);
 }
 
 function update(deltaTime) {
-    updateScore();
-    updateDino(deltaTime);
-    updateGround(deltaTime);
-    updateBird(deltaTime);
-    updateCactus(deltaTime);
-    removeObstacle();
+	updateScore();
+	updateDino(deltaTime);
+	updateGround(deltaTime);
+	updateBird(deltaTime);
+	updateCactus(deltaTime);
+	removeObstacle()
 }
 
 function render(currentTime) {
-    clearCanvas(0, 0, 800, 600);
-    drawScore();
-    drawCactus();
-    drawGround();
-    drawDino(currentTime);
-    drawBird(currentTime);
+	clearCanvas(0, 0, 800, 600);
+	drawScore();
+	drawCactus();
+	drawGround();
+	drawDino(currentTime);
+	drawBird(currentTime);
 }
 
 export function gameOver() {
-    gameState = 'gameOver';
+	gameState = 'gameOver';
 }
